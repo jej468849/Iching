@@ -1,4 +1,3 @@
-html
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -177,8 +176,8 @@ function setNow(){
     const hour = String(now.getHours()).padStart(2,"0");
     const minute = String(now.getMinutes()).padStart(2,"0");
 
-    document.getElementById("solarDate").value = `$`{year}-`${month}-$`{day}`;
-    document.getElementById("solarTime").value = ``${hour}:$`{minute}`;
+    document.getElementById("solarDate").value = `${year}-${month}-${day}`;
+    document.getElementById("solarTime").value = `${hour}:${minute}`;
 }
 
 function getHourNumber(hour){
@@ -235,4 +234,14 @@ function calculate(){
     document.getElementById("year").innerText = yearNum;
     document.getElementById("month").innerText = monthNum;
     document.getElementById("day").innerText = dayNum;
-    d
+    document.getElementById("hour").innerText = hourNum;
+
+    document.getElementById("result").classList.add("show");
+}
+
+setNow();
+
+</script>
+
+</body>
+</html>
