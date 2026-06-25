@@ -236,3 +236,4 @@ function calculate(){
     document.getElementById("month").innerText = monthNum;
     document.getElementById("day").innerText = dayNum;
     d
+ 
