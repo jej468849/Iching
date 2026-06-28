@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>시초점 작괘</title>
+
+<style>
+
+body{
+    font-family: "Malgun Gothic", sans-serif;
+    background:#f5f5f5;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:420px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 3px 15px rgba(0,0,0,0.1);
+}
+
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+h1{
+    margin: 0;
+    font-size: 28px;
+    color: #333;
+}
+
+.home-btn{
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.home-btn:hover{
+    background: #5568d3;
+}
+
+button{
+    width:100%;
+    padding:15px;
+    margin-top:10px;
+    font-size:18px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    background: #fa709a;
+    color: white;
+}
+
+button:hover{
+    background: #f04a7a;
+}
+
+#hexagram{
+    font-size:42px;
+    line-height:1.2;
+    margin:30px 0;
+}
+
+#result{
+    margin-top:20px;
+    font-size:18px;
+    padding: 20px;
+    background: #fffdfb;
+    border-radius: 8px;
+    border-left: 4px solid #fa709a;
+    text-align: left;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+    <h1>🎲 시초점 작괘</h1>
+    <a href="index.html" class="home-btn">← 돌아가기</a>
+</div>
+
+<div id="hexagram"></div>
+
+<button onclick="drawLine()">효 뽑기</button>
+
+<button onclick="resetHexagram()" style="background: #999; margin-top: 5px;">처음부터</button>
+
+<div id="result"></div>
+
+</div>
+
+<script>
+
+let lines=[];
+
+// 팔괘 번호
+const trigramName={
+1:"건 ☰",
+2:"태 ☱",
+3:"리 ☲",
+4:"진 ☳",
+5:"손 ☴",
+6:"감 ☵",
+7:"간 ☶",
+8:"곤 ☷"
+};
+
+// 시초점 확률
+function generateLine(){
+    let r=Math.random();
+    if(r<1/16) return 6;
+    if(r<6/16) return 7;
+    if(r<13/16) return 8;
+    return 9;
+}
+
+function drawLine(){
+    if(lines.length>=6){
+        alert("이미 완성되었습니다.");
+        return;
+    }
+
+    lines.push(generateLine());
+    drawHexagram();
+}
+
+function drawHexagram(){
+    let html="";
+    for(let i=5;i>=0;i--){
+        if(i>=lines.length){
+            html+="□<br>";
+            continue;
+        }
+
+        switch(lines[i]){
+            case 6:
+                html+="⚋ ×<br>";
+                break;
+            case 7:
+                html+="⚊<br>";
+                break;
+            case 8:
+                html+="⚋<br>";
+                break;
+            case 9:
+                html+="⚊ ○<br>";
+                break;
+        }
+    }
+
+    document.getElementById("hexagram").innerHTML=html;
+
+    if(lines.length==6){
+        calculate();
+    }
+}
+
+function trigram(start){
+    let b=0;
+    for(let i=0;i<3;i++){
+        let yang=(lines[start+i]==7 || lines[start+i]==9);
+        if(yang){
+            b|=(1<<i);
+        }
+    }
+
+    const map={
+        7:1,
+        6:2,
+        5:3,
+        1:4,
+        3:5,
+        2:6,
+        4:7,
+        0:8
+    };
+
+    return map[b];
+}
+
+function calculate(){
+    let lower=trigram(0);
+    let upper=trigram(3);
+    let moving=[];
+
+    for(let i=0;i<6;i++){
+        if(lines[i]==6 || lines[i]==9){
+            moving.push(i+1);
+        }
+    }
+
+    document.getElementById("result").innerHTML=`
+<div><b>상괘 :</b> ${trigramName[upper]}</div>
+<div style="margin-top: 10px;"><b>하괘 :</b> ${trigramName[lower]}</div>
+<div style="margin-top: 10px;"><b>동효 :</b> ${moving.length?moving.join(", ")+"효":"없음"}</div>
+`;
+}
+
+function resetHexagram(){
+    lines=[];
+    document.getElementById("result").innerHTML="";
+    drawHexagram();
+}
+
+resetHexagram();
+
+</script>
+
+</body>
+</html>
