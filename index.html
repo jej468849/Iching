@@ -73,6 +73,11 @@ h1{
     background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
 }
 
+.sichomjum-btn{
+    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    grid-column: 1 / -1;
+}
+
 .icon{
     font-size: 40px;
 }
@@ -98,6 +103,10 @@ h1{
     .card-btn{
         padding: 30px 15px;
     }
+    
+    .sichomjum-btn{
+        grid-column: 1;
+    }
 }
 </style>
 </head>
@@ -121,6 +130,12 @@ h1{
             <div class="icon">🌙</div>
             <div>음력 변환</div>
             <div class="description">음력 달력으로 작괘</div>
+        </a>
+
+        <a href="sichomjum.html" class="card-btn sichomjum-btn">
+            <div class="icon">🎲</div>
+            <div>시초점 작괘</div>
+            <div class="description">주사위로 효를 뽑다</div>
         </a>
     </div>
 </div>
